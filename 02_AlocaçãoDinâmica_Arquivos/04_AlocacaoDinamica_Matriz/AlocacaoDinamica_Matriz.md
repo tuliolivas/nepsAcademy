@@ -1,24 +1,27 @@
 # Funcionamento de alocação
 Ao solicitar um espaço de memória por alocação dinâmica, uma porção sequencial de memória é alocada.
 Essa faixa sequencial, como visto em aulas anteriores, pode ser utilizada como um vetor.
+
 Mas como utilizar isso para alocar uma matriz? Primeiramente, precisamos entender como é a estrutura de uma matriz.
 
 # Estrutura de uma matriz
 Uma matriz pode ser entendida como um vetor de vetores.
 Dessa forma, podemos interpretar uma matriz como um vetor de ponteiros, onde cada ponteiro aponta para o início de um outro vetor.
+
 Uma explicação mais detalhada e aprofundada sobre isso pode ser encontrada na aula de Matrizes do curso de Introdução à Programação.
 
 Então, para alocar uma matriz N×M, devemos seguir os seguintes passos:
-Alocar memória para um vetor de N vetores, isto é, um vetor que armazene N ponteiros.
-Para cada elemento (ponteiro) desse primeiro vetor, alocar um vetor de M elementos e atribuir o endereço de sua primeira posição a esse ponteiro.
+1. Alocar memória para um vetor de N vetores, isto é, um vetor que armazene N ponteiros.
+2. Para cada elemento (ponteiro) desse primeiro vetor, alocar um vetor de M elementos e atribuir o endereço de sua primeira posição a esse ponteiro.
 
 # Ponteiro para ponteiro
 Para alocar um vetor de inteiros, utilizamos um ponteiro.
 Analogamente, para alocar um vetor de vetores, isto é, um vetor de ponteiros, precisamos utilizar um ponteiro que aponte para ponteiros.
+
 Para criar um ponteiro que aponte para ponteiros, basta utilizar dois asteriscos ao invés de apenas um.
 Assim, o primeiro asterisco irá indicar que estamos trabalhando com um ponteiro, e o segundo irá indicar que o dado apontado pelo ponteiro também é um ponteiro.
 
-Exemplos:
+### Exemplos:
 
 ```c
 int **p; // ponteiro para ponteiro de inteiro`
@@ -26,6 +29,7 @@ char **ptr; // ponteiro para ponteiro de caractere`
 ````
 
 # Alocação de uma matriz dinâmica
+
 Para alocar nossa matriz dinâmica, vamos seguir os dois passos citados acima:
 Alocar memória para um vetor de N vetores, isto é, um vetor que armazene N ponteiros.
 
@@ -35,8 +39,10 @@ int **p = (int**)malloc(N * sizeof(int*));
 
 A função malloc foi chamada com o parâmetro N * sizeof(int*), pois queremos um bloco de memória com capacidade para armazenar N ponteiros do tipo inteiro, que por sua vez possuem o tamanho em bytes de sizeof(int*) cada.
 Após isso, o endereço de memória retornado pela função foi atribuído ao ponteiro para ponteiros p, utilizando um casting de dados para prevenir erros.
+
 Dessa forma, cada posição do vetor criado armazena um ponteiro para inteiros.
 Devemos, então, alocar um vetor de inteiros para cada um desses ponteiros, criando assim uma matriz.
+
 Para cada elemento(ponteiro) desse primeiro vetor, alocar um vetor de M elementos e atribuir o endereço de sua primeira posição a esse ponteiro.
 
 ```c
@@ -64,6 +70,7 @@ m[3] = (int*)calloc(9, sizeof(int));
 
 * É uma boa prática, para evitar erros inesperados, checar se a alocação do vetor de vetores foi realizada antes de alocar cada um dos vetores da matriz. 
 * O mesmo é válido para cada um dos vetores:
+
 ```c
 int **m = (int**)malloc(5*sizeof(int*));
 
@@ -90,6 +97,7 @@ free(m);
 ```
 
 # Alterando as dimensões de uma matriz dinâmica
+
 Uma das maiores vantagens de utilizar matrizes dinâmicas é a possibilidade de alterar tanto a quantidade de vetores armazenadas por elas, quanto a quantidade de elementos de cada um desses vetores.
 Isso é possível graças a função realloc, aprendida previamente. Observe:
 
@@ -113,6 +121,7 @@ m = (int**)realloc(m, 6*sizeof(int*));
 ```
 
 ### Observações:
+
 * Como a quantidade de vetores da matriz pode variar, é uma boa prática manter uma variável que armazene essa quantidade.
 * Isso é importante para possibilitar a desalocação adequada da matriz:
   
@@ -140,7 +149,7 @@ free(p);
 * Ao diminuir o tamanho da matriz, lembre-se de desalocar os vetores que serão excluídos:
 
 ```c
-// Y eh uma matriz dinamica 7x4
+// Y è uma matriz dinamica 7x4
 
 // Para diminuir sua quantidade de vetores para 5, é
 // importante desalocar os 2 últimos vetores antes:
