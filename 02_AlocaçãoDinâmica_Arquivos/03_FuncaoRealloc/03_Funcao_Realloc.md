@@ -1,6 +1,7 @@
 # Função Realloc
 A função realloc irá alterar o tamanho de um bloco de memória previamente alocado.
 Ou seja, ela irá receber um ponteiro que aponta para a primeira posição de um bloco de memória que já foi alocado e irá alterar a quantidade de bytes dele, retornando um ponteiro para a primeira posição do bloco com seu novo tamanho.
+
 Caso o novo tamanho seja maior que o anterior, então todas as posições anteriores manterão seus valores e as novas terão valores indeterminados.
 Caso contrário, as primeiras posições do bloco irão manter seus valores, e a exclusão será feita nas posições ao final do bloco.
 
@@ -13,19 +14,24 @@ Para a utilização da função, são necessários dois parâmetros:
 2. o novo número de bytes que esse bloco irá assumir.
 
 ### Exemplos:
+
 ```c
 int *p1 = malloc(64);
+
 p1 = realloc(p1, 512);
+
 double *p2 = calloc(4, sizeof(double));
+
 p2 = realloc(p2, 8*sizeof(double));
 ```
 
-###Observações:
+### Observações:
 
 O ponteiro passado para a função também pode ter um valor nulo e, nesse caso, a função atuará da mesma forma que a função malloc. Observe:
 
 ```c
 int *p = NULL;
+
 p = realloc(p, 64);
 ```
 
@@ -37,7 +43,9 @@ Por isso, uma boa prática é utilizar um ponteiro auxiliar para receber o ender
 Observe:
 ```c
 int *p = malloc(24);
+
 int *aux = realloc(p, 2147483647); // retorna um ponteiro nulo
+
 if(aux != NULL){ // NULL representa um valor nulo
     p = aux; // nao eh executado, pois aux armazena um ponteiro nulo
 }
@@ -47,7 +55,9 @@ Tendo em vista que a função realloc retorna um ponteiro do tipo void, pode ser
 
 ```c
 int *p = (int*)malloc(8);
+
 p = (int*)realloc(p, 64);
+
 char *ptr = (char*)calloc(7, sizeof(char));
 ```
 
@@ -55,7 +65,9 @@ A função free também pode ser utilizada para liberar a memória realocada pel
 
 ```c
 double *ptr = (double*)malloc(7*sizeof(double));
+
 ptr = (double*)realloc(ptr, 9*sizeof(double));
+
 free(ptr);
 ```
 
@@ -114,8 +126,11 @@ ptr[3] = 'D';
 ```
 
 No entanto, para diminuir o vetor não será necessário voltar para antiga posição, pois a região onde o bloco está armazenado tem espaço suficiente.
-Ou seja, o deslocamento do bloco de memória só ocorre quando não é possível realizar a realocação na região onde ele se encontra. Observe:
-````c
+Ou seja, o deslocamento do bloco de memória só ocorre quando não é possível realizar a realocação na região onde ele se encontra.
+
+Observe:
+
+```c
 p = (char*)realloc(p, 2);
 ```
 
